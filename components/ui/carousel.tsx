@@ -5,6 +5,7 @@ import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -213,7 +214,10 @@ const CarouselPrevious = React.forwardRef<
         className
       )}
       disabled={!canScrollPrev}
-      onClick={scrollPrev}
+      onClick={() => {
+        scrollPrev();
+        toast('Previous slide', { icon: '◀️' });
+      }}
       {...props}
     >
       <ArrowLeft className="h-4 w-4" />
@@ -242,7 +246,10 @@ const CarouselNext = React.forwardRef<
         className
       )}
       disabled={!canScrollNext}
-      onClick={scrollNext}
+      onClick={() => {
+        scrollNext();
+        toast('Next slide', { icon: '▶️' });
+      }}
       {...props}
     >
       <ArrowRight className="h-4 w-4" />

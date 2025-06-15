@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Moon, Sun, Menu, X, Code2 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
+import toast from 'react-hot-toast';
 
 const navItems = [
   { name: 'Home', href: '#home' },
@@ -77,8 +78,8 @@ export function Navbar() {
       transition={{ duration: 0.3, ease: "easeInOut" }}
 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-          ? 'glass-dark border-b border-white/10'
-          : 'bg-transparent'
+        ? 'glass-dark border-b border-white/10'
+        : 'bg-transparent'
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,10 +100,13 @@ export function Navbar() {
             {navItems.map((item) => (
               <motion.button
                 key={item.name}
-                onClick={() => scrollToSection(item.href)}
+                onClick={() => {
+                  scrollToSection(item.href);
+                  // toast(`Navigating to ${item.name}`, { icon: '🔗' });
+                }}
                 className={`relative px-3 py-2 text-sm font-medium transition-colors hover:text-primary ${activeSection === item.href.substring(1)
-                    ? 'text-primary'
-                    : 'text-muted-foreground'
+                  ? 'text-primary'
+                  : 'text-muted-foreground'
                   }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -122,23 +126,26 @@ export function Navbar() {
 
           {/* Theme Toggle & Mobile Menu */}
           <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="hover:bg-primary/20"
-            >
-              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </Button>
+            {/* <Button
+							variant="ghost"
+							size="icon"
+							onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+							className="hover:bg-primary/20"
+						>
+							<Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+							<Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+							<span className="sr-only">Toggle theme</span>
+						</Button> */}
 
             {/* Mobile menu button */}
             <Button
               variant="ghost"
               size="icon"
               className="md:hidden hover:bg-primary/20"
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => {
+                setIsOpen(!isOpen);
+                toast(isOpen ? 'Menu closed' : 'Menu opened', { icon: '📱' });
+              }}
             >
               {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
@@ -162,10 +169,14 @@ export function Navbar() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  onClick={() => scrollToSection(item.href)}
+                  onClick={() => {
+                    scrollToSection(item.href);
+                    setIsOpen(false);
+                    toast(`Navigating to ${item.name}`, { icon: '🔗' });
+                  }}
                   className={`block w-full text-left px-3 py-2 text-base font-medium rounded-lg transition-colors ${activeSection === item.href.substring(1)
-                      ? 'text-primary bg-primary/10'
-                      : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                    ? 'text-primary bg-primary/10'
+                    : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
                     }`}
                 >
                   {item.name}

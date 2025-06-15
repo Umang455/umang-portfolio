@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
+import toast from 'react-hot-toast';
 
 const contactMethods = [
   {
@@ -46,8 +46,6 @@ const socialLinks = [
 export function ContactSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const { toast } = useToast();
-  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -66,17 +64,21 @@ export function ContactSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    toast({
-      title: "Message sent!",
-      description: "Thank you for reaching out. I'll get back to you soon!",
-    });
-
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    setIsSubmitting(false);
+    const loadingToast = toast.loading('Sending message...');
+    try {
+      // Simulate form submission
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      toast.success('Message sent successfully!', {
+        icon: '📨',
+        duration: 4000
+      });
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      toast.error('Failed to send message. Please try again.');
+    } finally {
+      toast.dismiss(loadingToast);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -99,7 +101,7 @@ export function ContactSection() {
             Let's Work Together
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Have a project in mind or want to collaborate? I'm always excited to discuss 
+            Have a project in mind or want to collaborate? I'm always excited to discuss
             new opportunities and innovative ideas.
           </p>
         </motion.div>
@@ -113,7 +115,7 @@ export function ContactSection() {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <h3 className="text-2xl font-bold mb-6">Get in Touch</h3>
-              
+
               <div className="space-y-4">
                 {contactMethods.map((method, index) => (
                   <motion.a
@@ -201,7 +203,7 @@ export function ContactSection() {
               <Card className="glass border-white/10 hover:border-primary/20 transition-all duration-300">
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
-                  
+
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
@@ -216,7 +218,7 @@ export function ContactSection() {
                           placeholder="Your full name"
                         />
                       </div>
-                      
+
                       <div className="space-y-2">
                         <Label htmlFor="email">Email *</Label>
                         <Input
@@ -293,7 +295,7 @@ export function ContactSection() {
           <div className="glass rounded-2xl p-8 border border-white/10 max-w-3xl mx-auto">
             <h3 className="text-2xl font-bold mb-4">Ready to start something amazing?</h3>
             <p className="text-muted-foreground mb-6">
-              Whether you have a specific project in mind or just want to explore possibilities, 
+              Whether you have a specific project in mind or just want to explore possibilities,
               I'm here to help bring your ideas to life with cutting-edge technology.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

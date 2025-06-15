@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Code2, Heart, Coffee, Github, Mail, MapPin } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -10,7 +11,7 @@ export function Footer() {
     <footer className="relative py-16 overflow-hidden border-t border-white/10">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
-      
+
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           {/* Brand Section */}
@@ -25,7 +26,7 @@ export function Footer() {
               <span className="text-xl font-bold text-gradient">Umang Somani</span>
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              Full Stack Developer passionate about creating innovative solutions 
+              Full Stack Developer passionate about creating innovative solutions
               that merge creativity with cutting-edge technology.
             </p>
           </motion.div>
@@ -78,17 +79,20 @@ export function Footer() {
                 <Mail className="h-4 w-4 group-hover:scale-110 transition-transform" />
                 <span>umangsomani7@gmail.com</span>
               </a>
-              
+
               <a
                 href="https://github.com/umangsomani"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors group"
+                onClick={(e) => {
+                  toast.success('Opening GitHub', { icon: <Github className="h-4 w-4" /> });
+                }}
               >
                 <Github className="h-4 w-4 group-hover:scale-110 transition-transform" />
                 <span>@umangsomani</span>
               </a>
-              
+
               <div className="flex items-center space-x-2 text-muted-foreground">
                 <MapPin className="h-4 w-4" />
                 <span>Mumbai, India</span>

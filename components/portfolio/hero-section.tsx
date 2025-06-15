@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Download, ExternalLink, Github, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import toast from 'react-hot-toast';
 
 export function HeroSection() {
   const particlesRef = useRef<HTMLDivElement>(null);
@@ -37,8 +38,18 @@ export function HeroSection() {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleResumeDownload = () => {
+    const loadingToast = toast.loading('Preparing resume...');
+    window.open('/resume.pdf', '_blank');
+    toast.dismiss(loadingToast);
+    toast.success('Resume opened in new tab', {
+      icon: '📄',
+      duration: 3000
+    });
+  };
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="min-h-screen relative overflow-hidden bg-background flex items-center justify-center">
       {/* Animated Background */}
       <div
         ref={particlesRef}
@@ -108,7 +119,10 @@ export function HeroSection() {
           >
             <Button
               size="lg"
-              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => {
+                document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+                toast.success('Scrolling to projects section');
+              }}
               className="group bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-full glow hover:scale-105 transition-all duration-300"
             >
               <ExternalLink className="mr-2 h-5 w-5 group-hover:rotate-45 transition-transform" />
@@ -118,7 +132,7 @@ export function HeroSection() {
             <Button
               variant="outline"
               size="lg"
-              onClick={() => window.open('/resume.pdf', '_blank')}
+              onClick={handleResumeDownload}
               className="group border-primary/20 hover:border-primary hover:bg-primary/10 px-8 py-3 rounded-full hover:scale-105 transition-all duration-300"
             >
               <Download className="mr-2 h-5 w-5 group-hover:animate-bounce" />
@@ -153,21 +167,27 @@ export function HeroSection() {
           </motion.div>
         </motion.div>
 
-        {/* Scroll Indicator */}
+        {/* Scroll Indicator - Centered */}
       </div>
-      <motion.button
-        onClick={scrollToNext}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2, duration: 0.6, repeat: Infinity, repeatType: "reverse" }}
-        whileHover={{ scale: 1.1 }}
-      >
-        <div className="flex flex-col items-center space-y-2 text-muted-foreground hover:text-primary transition-colors">
-          <span className="text-sm font-medium">Scroll Down</span>
-          <ArrowDown className="h-5 w-5 animate-bounce" />
-        </div>
-      </motion.button>
+      <div className="absolute bottom-8 left-0 right-0 flex justify-center">
+        <motion.button
+          onClick={() => {
+            scrollToNext();
+            // toast('Scrolling to next section', { icon: '👇' });
+          }}
+          className="p-2 rounded-full glass hover:glass-dark border border-white/20 hover:border-primary/50 transition-all duration-300"
+          animate={{
+            y: [0, 10, 0],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        >
+          <ArrowDown className="h-6 w-6 text-muted-foreground" />
+        </motion.button>
+      </div>
     </section>
   );
 }
