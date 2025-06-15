@@ -17,6 +17,18 @@ import { Badge } from '@/components/ui/badge';
 
 const journeyItems = [
   {
+    year: '2025',
+    title: 'Build Fast With AI',
+    subtitle: 'Full Stack Intern',
+    description:
+      'Contributed to modern archive platform development, working with cutting-edge technologies to build scalable digital solutions. Gained valuable industry experience and mentorship.',
+    icon: Briefcase,
+    type: 'work',
+    color: 'from-pink-500 to-cyan-500',
+    location: 'Remote',
+    tags: ['Next JS', 'Python', 'Supabase', 'OpenAI', 'Vapi', "Livekit"],
+  },
+  {
     year: '2024',
     title: 'AI Event Planner Launch',
     subtitle: 'Full Stack Project',
